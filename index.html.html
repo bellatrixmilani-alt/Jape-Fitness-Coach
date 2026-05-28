@@ -1754,6 +1754,9 @@
 
       .modal-content {
         padding: 1.5rem;
+        overflow-y: auto;
+        max-height: 95vh;
+        width: 95%;
       }
 
       .hero {
@@ -3494,6 +3497,22 @@
         return;
       }
       if (currentPaymentMethod === 'mpesa') {
+        var phoneEl = document.getElementById('fwPhone');
+        var phone = phoneEl ? phoneEl.value : '';
+        var amtStr = currentPackagePrice.toLocaleString() + ' KES';
+        var pkgEl = document.getElementById('fwPkg');
+        var pkg = pkgEl ? pkgEl.textContent : '';
+
+        document.getElementById('mpesaSumPkg').textContent = pkg;
+        document.getElementById('mpesaSumAmt').textContent = amtStr;
+        document.getElementById('mpesaSumPhone').textContent = phone;
+
+        var now = new Date();
+        var dateEl = document.getElementById('mpesaSumDate');
+        var timeEl = document.getElementById('mpesaSumTime');
+        if (dateEl) dateEl.textContent = now.toLocaleDateString();
+        if (timeEl) timeEl.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
         goToStep('stepMpesa');
         return;
       }
