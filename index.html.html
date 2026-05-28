@@ -1589,6 +1589,24 @@
 
     .modal-step.active {
       display: block;
+      background: var(--cream);
+      padding: 2.5rem;
+      border-radius: var(--radius-lg);
+      max-width: 550px;
+      width: 100%;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+      max-height: 90vh;
+      overflow-y: auto;
+      margin: auto;
+    }
+
+    @media (max-width: 600px) {
+      .modal-step.active {
+        padding: 1.5rem;
+        width: 95%;
+        max-height: 95vh;
+      }
     }
 
     .summary-box {
