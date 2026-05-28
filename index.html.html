@@ -1451,7 +1451,7 @@
     .modal {
       display: none;
       position: fixed;
-      z-index: 1000;
+      z-index: 99999;
       left: 0;
       top: 0;
       width: 100%;
@@ -1474,6 +1474,7 @@
       max-width: 550px;
       width: 100%;
       position: relative;
+      z-index: 100000;
       box-shadow: var(--shadow-lg);
       max-height: 90vh;
       overflow-y: auto;
@@ -1647,7 +1648,7 @@
       padding: 1.25rem 2rem;
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-lg);
-      z-index: 10000;
+      z-index: 1000;
       font-family: var(--sans);
       font-size: 1rem;
       font-weight: 500;
@@ -2126,6 +2127,18 @@
     };
 
     window.goToNextPaymentStep = function () {
+
+      // ✅ T&C must be checked before proceeding
+      const termsBox = document.getElementById('termsCheckbox');
+      if (!termsBox || !termsBox.checked) {
+        const termsErr = document.getElementById('termsError');
+        if (termsErr) {
+          termsErr.style.display = 'block';
+          termsErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+
       const pkgNameEl = document.getElementById('modalPackageName');
       const pkg = pkgNameEl ? pkgNameEl.textContent : 'Silver Package';
       const phoneEl = document.getElementById('fwPhone');
@@ -2133,17 +2146,15 @@
 
       const amtStr = currentPackagePrice.toLocaleString() + ' KES';
 
+      // ✅ Hide ALL steps first so only one shows at a time
+      document.querySelectorAll('.modal-step').forEach(el => el.classList.remove('active'));
+
       if (currentPaymentMethod === 'mpesa') {
         document.getElementById('mpesaSumPkg').textContent = pkg;
         document.getElementById('mpesaSumAmt').textContent = amtStr;
         document.getElementById('mpesaSumPhone').textContent = phone;
-
-        const now = new Date();
-        document.getElementById('mpesaSumDate').textContent = now.toLocaleDateString();
-        document.getElementById('mpesaSumTime').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
         goToStep('stepMpesa');
-      } else if (currentPaymentMethod === 'visa' || currentPaymentMethod === 'mastercard') {
+      } else if (currentPaymentMethod === 'card') {
         document.getElementById('cardSumAmt').textContent = amtStr;
         goToStep('stepCard');
       } else if (currentPaymentMethod === 'paypal') {
@@ -2151,7 +2162,6 @@
         goToStep('stepPaypal');
       }
     };
-
     window.simulateSuccess = function (methodName) {
       const modal = document.getElementById('onboardingModal');
       if (modal) modal.classList.remove('open');
