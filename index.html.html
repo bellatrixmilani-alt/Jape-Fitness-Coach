@@ -2124,6 +2124,12 @@
       document.querySelectorAll('.modal-step').forEach(el => el.classList.remove('active'));
       const nextEl = document.getElementById(stepId);
       if (nextEl) nextEl.classList.add('active');
+      var modalContent = document.querySelector('#onboardingModal .modal-content');
+      if (stepId === 'step1') {
+        if (modalContent) modalContent.style.display = '';
+      } else {
+        if (modalContent) modalContent.style.display = 'none';
+      }
     };
 
     window.goToNextPaymentStep = function () {
@@ -3458,6 +3464,15 @@
       var email = document.getElementById('fwEmail').value;
       if (!email) {
         alert('Please enter your email');
+        return;
+      }
+      var termsCheckbox = document.querySelector('#onboardingModal input[type="checkbox"]');
+      if (!termsCheckbox || !termsCheckbox.checked) {
+        alert('Please agree to the Terms & Conditions and Refund Policy to continue.');
+        if (termsCheckbox) {
+          termsCheckbox.style.outline = '2px solid red';
+          setTimeout(() => termsCheckbox.style.outline = '', 3000);
+        }
         return;
       }
       if (currentPaymentMethod === 'mpesa') {
