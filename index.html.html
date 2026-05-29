@@ -3565,18 +3565,23 @@
         return;
       }
     }
-<!-- Safe Calendly Pre-warm -->
-<\script >
-      window.addEventListener('load', function () {
-        setTimeout(function () {
-          // Only prefetch - don't open popup
-          var link = document.createElement('link');
-          link.rel = 'prefetch';
-          link.href = 'https://calendly.com/bellatrixmilani/30min';
-          document.head.appendChild(link);
-        }, 2000)
-      });
+  </script>
+  <!-- Calendly Pre-warm: loads silently in background -->
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (window.Calendly) {
+          Calendly.initPopupWidget({
+            url: 'https://calendly.com/bellatrixmilani/30min'
+          });
+          setTimeout(function () {
+            var overlay = document.querySelector('.calendly-overlay');
+            if (overlay) overlay.remove();
+          }, 500);
+        }
+      }, 3000);
+    });
   </script>
 </body>
 
-<\html>
+</html>
