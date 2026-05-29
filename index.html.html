@@ -11,8 +11,11 @@
     href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
 
-  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-
+  <link rel="preconnect" href="https://calendly.com">
+  <link rel="preconnect" href="https://assets.calendly.com">
+  <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css">
+  <!-- Calendly Script -->
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
   <style>
     :root {
       --cream: #FFFFFF;
@@ -1666,7 +1669,7 @@
       padding: 1.25rem 2rem;
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-lg);
-      z-index: 1000;
+      z-index: 999999;
       font-family: var(--sans);
       font-size: 1rem;
       font-weight: 500;
@@ -2044,8 +2047,7 @@
     }
   </style>
 
-  <!-- Calendly Script -->
-  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
 
   <script>
     // --- Global Data and Functions mapped to Window so HTML onclicks work perfectly ---
@@ -2116,7 +2118,7 @@
         toast.classList.add('show');
         setTimeout(() => {
           toast.classList.remove('show');
-        }, 6000);
+        }, 4000);
       }
     }
 
@@ -3173,20 +3175,21 @@
                 style="height:20px; width:auto; pointer-events:none;" />
             </div>
           </div>
+
+          <label
+            style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.8125rem; color:var(--muted); margin-top:1.5rem; cursor:pointer;">
+            <input type="checkbox" required style="width:auto; margin-top:0.2rem; accent-color:var(--brand-blue);">
+            <span>I agree to the <a href="#" onclick="openLegalModal('terms', event)"
+                style="color:var(--brand-blue); text-decoration:underline;">Terms & Conditions</a> and <a href="#"
+                onclick="openLegalModal('refund', event)"
+                style="color:var(--brand-blue); text-decoration:underline;">Refund
+                Policy</a>.</span>
+          </label>
+
+          <button type="button" class="btn-primary" onclick="payWithPaystack()"
+            style="width:100%; justify-content:center; margin-top:1.5rem; font-size:1rem; padding:1rem;">Proceed to
+            Payment</button>
       </div>
-
-      <label
-        style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.8125rem; color:var(--muted); margin-top:1.5rem; cursor:pointer;">
-        <input type="checkbox" required style="width:auto; margin-top:0.2rem; accent-color:var(--brand-blue);">
-        <span>I agree to the <a href="#" onclick="openLegalModal('terms', event)"
-            style="color:var(--brand-blue); text-decoration:underline;">Terms & Conditions</a> and <a href="#"
-            onclick="openLegalModal('refund', event)" style="color:var(--brand-blue); text-decoration:underline;">Refund
-            Policy</a>.</span>
-      </label>
-
-      <button type="button" class="btn-primary" onclick="payWithPaystack()"
-        style="width:100%; justify-content:center; margin-top:1.5rem; font-size:1rem; padding:1rem;">Proceed to
-        Payment</button>
       </form>
     </div>
 
@@ -3244,6 +3247,20 @@
       <button class="btn-back" onclick="goToStep('step1')">← Back</button>
       <h3 class="modal-title">Checkout with PayPal</h3>
       <p class="modal-subtitle">Amount due: <strong id="paypalSumAmt"></strong></p>
+      <div class="summary-box" style="margin: 1rem 0;">
+        <div class="summary-row">
+          <span class="summary-label">Amount</span>
+          <span class="summary-val" id="paypalSumAmt2"></span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Date</span>
+          <span class="summary-val" id="paypalSumDate"></span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Time</span>
+          <span class="summary-val" id="paypalSumTime"></span>
+        </div>
+      </div>
       <div style="text-align:center; padding: 2rem 0;">
         <p style="color:var(--muted); font-size:0.9375rem; margin-bottom: 2rem;">You will be securely redirected to
           PayPal to complete your purchase.</p>
@@ -3534,10 +3551,36 @@
         return;
       }
       if (currentPaymentMethod === 'paypal') {
+        var paypalAmt = currentPackagePrice.toLocaleString() + ' KES';
+        document.getElementById('paypalSumAmt').textContent = paypalAmt;
+        document.getElementById('paypalSumAmt2').textContent = paypalAmt;
+
+        var now = new Date();
+        var paypalDateEl = document.getElementById('paypalSumDate');
+        var paypalTimeEl = document.getElementById('paypalSumTime');
+        if (paypalDateEl) paypalDateEl.textContent = now.toLocaleDateString();
+        if (paypalTimeEl) paypalTimeEl.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
         goToStep('stepPaypal');
         return;
       }
     }
+  </script>
+  <!-- Calendly Pre-warm: loads silently in background -->
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (window.Calendly) {
+          Calendly.initPopupWidget({
+            url: 'https://calendly.com/bellatrixmilani/30min'
+          });
+          setTimeout(function () {
+            var overlay = document.querySelector('.calendly-overlay');
+            if (overlay) overlay.remove();
+          }, 500);
+        }
+      }, 3000);
+    });
   </script>
 </body>
 
