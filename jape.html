@@ -3142,87 +3142,87 @@
                 style="height:20px; width:auto; pointer-events:none;" />
             </div>
           </div>
+
+          <label
+            style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.8125rem; color:var(--muted); margin-top:1.5rem; cursor:pointer;">
+            <input type="checkbox" required style="width:auto; margin-top:0.2rem; accent-color:var(--brand-blue);">
+            <span>I agree to the <a href="#" onclick="openLegalModal('terms', event)"
+                style="color:var(--brand-blue); text-decoration:underline;">Terms & Conditions</a> and <a href="#"
+                onclick="openLegalModal('refund', event)"
+                style="color:var(--brand-blue); text-decoration:underline;">Refund
+                Policy</a>.</span>
+          </label>
+
+          <button type="button" class="btn-primary" onclick="payWithPaystack()"
+            style="width:100%; justify-content:center; margin-top:1.5rem; font-size:1rem; padding:1rem;">Proceed to
+            Payment</button>
+        </form>
       </div>
 
-      <label
-        style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.8125rem; color:var(--muted); margin-top:1.5rem; cursor:pointer;">
-        <input type="checkbox" required style="width:auto; margin-top:0.2rem; accent-color:var(--brand-blue);">
-        <span>I agree to the <a href="#" onclick="openLegalModal('terms', event)"
-            style="color:var(--brand-blue); text-decoration:underline;">Terms & Conditions</a> and <a href="#"
-            onclick="openLegalModal('refund', event)" style="color:var(--brand-blue); text-decoration:underline;">Refund
-            Policy</a>.</span>
-      </label>
-
-      <button type="button" class="btn-primary" onclick="payWithPaystack()"
-        style="width:100%; justify-content:center; margin-top:1.5rem; font-size:1rem; padding:1rem;">Proceed to
-        Payment</button>
-      </form>
-    </div>
-
-    <!-- STEP 2: M-PESA -->
-    <div id="stepMpesa" class="modal-step">
-      <button class="btn-back" onclick="goToStep('step1')">← Back</button>
-      <h3 class="modal-title">Complete M-Pesa Payment</h3>
-      <p class="modal-subtitle">Review details to receive an STK prompt on your phone.</p>
-      <div class="summary-box">
-        <div class="summary-row"><span class="summary-label">Package</span><span class="summary-val"
-            id="mpesaSumPkg"></span></div>
-        <div class="summary-row"><span class="summary-label">Amount</span><span class="summary-val"
-            id="mpesaSumAmt"></span></div>
-        <div class="summary-row"><span class="summary-label">Phone</span><span class="summary-val"
-            id="mpesaSumPhone"></span></div>
-        <div class="summary-row" style="margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid var(--border);">
-          <span class="summary-label">Date</span><span class="summary-val" id="mpesaSumDate"></span>
-        </div>
-        <div class="summary-row"><span class="summary-label">Time</span><span class="summary-val"
-            id="mpesaSumTime"></span></div>
-      </div>
-      <button type="button" class="btn-primary"
-        style="width:100%; justify-content:center; padding:1rem; font-size:1rem; background: #4CAF50; border-color: #4CAF50;"
-        onclick="simulateSuccess('M-Pesa')">Send M-Pesa Prompt</button>
-    </div>
-
-    <!-- STEP 2: CARD -->
-    <div id="stepCard" class="modal-step">
-      <button class="btn-back" onclick="goToStep('step1')">← Back</button>
-      <h3 class="modal-title">Pay by Card</h3>
-      <p class="modal-subtitle">Amount due: <strong id="cardSumAmt"></strong></p>
-      <form onsubmit="event.preventDefault(); simulateSuccess('Card');">
-        <div class="form-group">
-          <label>Card Number</label>
-          <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" required>
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-          <div class="form-group">
-            <label>Expiry Date</label>
-            <input type="text" placeholder="MM/YY" maxlength="5" required>
+      <!-- STEP 2: M-PESA -->
+      <div id="stepMpesa" class="modal-step">
+        <button class="btn-back" onclick="goToStep('step1')">← Back</button>
+        <h3 class="modal-title">Complete M-Pesa Payment</h3>
+        <p class="modal-subtitle">Review details to receive an STK prompt on your phone.</p>
+        <div class="summary-box">
+          <div class="summary-row"><span class="summary-label">Package</span><span class="summary-val"
+              id="mpesaSumPkg"></span></div>
+          <div class="summary-row"><span class="summary-label">Amount</span><span class="summary-val"
+              id="mpesaSumAmt"></span></div>
+          <div class="summary-row"><span class="summary-label">Phone</span><span class="summary-val"
+              id="mpesaSumPhone"></span></div>
+          <div class="summary-row" style="margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid var(--border);">
+            <span class="summary-label">Date</span><span class="summary-val" id="mpesaSumDate"></span>
           </div>
-          <div class="form-group">
-            <label>CVC</label>
-            <input type="text" placeholder="123" maxlength="4" required>
-          </div>
+          <div class="summary-row"><span class="summary-label">Time</span><span class="summary-val"
+              id="mpesaSumTime"></span></div>
         </div>
-        <button type="submit" class="btn-primary"
-          style="width:100%; justify-content:center; margin-top:1rem; padding:1rem; font-size:1rem;">Complete
-          Payment</button>
-      </form>
-    </div>
-
-    <!-- STEP 2: PAYPAL -->
-    <div id="stepPaypal" class="modal-step">
-      <button class="btn-back" onclick="goToStep('step1')">← Back</button>
-      <h3 class="modal-title">Checkout with PayPal</h3>
-      <p class="modal-subtitle">Amount due: <strong id="paypalSumAmt"></strong></p>
-      <div style="text-align:center; padding: 2rem 0;">
-        <p style="color:var(--muted); font-size:0.9375rem; margin-bottom: 2rem;">You will be securely redirected to
-          PayPal to complete your purchase.</p>
         <button type="button" class="btn-primary"
-          style="width:100%; justify-content:center; padding:1rem; font-size:1rem; background:#003087; border-color:#003087;"
-          onclick="simulateSuccess('PayPal')">Proceed to PayPal</button>
+          style="width:100%; justify-content:center; padding:1rem; font-size:1rem; background: #4CAF50; border-color: #4CAF50;"
+          onclick="simulateSuccess('M-Pesa')">Send M-Pesa Prompt</button>
       </div>
-    </div>
 
-  </div>
+      <!-- STEP 2: CARD -->
+      <div id="stepCard" class="modal-step">
+        <button class="btn-back" onclick="goToStep('step1')">← Back</button>
+        <h3 class="modal-title">Pay by Card</h3>
+        <p class="modal-subtitle">Amount due: <strong id="cardSumAmt"></strong></p>
+        <form onsubmit="event.preventDefault(); simulateSuccess('Card');">
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" required>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+              <label>Expiry Date</label>
+              <input type="text" placeholder="MM/YY" maxlength="5" required>
+            </div>
+            <div class="form-group">
+              <label>CVC</label>
+              <input type="text" placeholder="123" maxlength="4" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary"
+            style="width:100%; justify-content:center; margin-top:1rem; padding:1rem; font-size:1rem;">Complete
+            Payment</button>
+        </form>
+      </div>
+
+      <!-- STEP 2: PAYPAL -->
+      <div id="stepPaypal" class="modal-step">
+        <button class="btn-back" onclick="goToStep('step1')">← Back</button>
+        <h3 class="modal-title">Checkout with PayPal</h3>
+        <p class="modal-subtitle">Amount due: <strong id="paypalSumAmt"></strong></p>
+        <div style="text-align:center; padding: 2rem 0;">
+          <p style="color:var(--muted); font-size:0.9375rem; margin-bottom: 2rem;">You will be securely redirected to
+            PayPal to complete your purchase.</p>
+          <button type="button" class="btn-primary"
+            style="width:100%; justify-content:center; padding:1rem; font-size:1rem; background:#003087; border-color:#003087;"
+            onclick="simulateSuccess('PayPal')">Proceed to PayPal</button>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <script>
